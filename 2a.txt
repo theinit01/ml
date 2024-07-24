@@ -1,0 +1,14 @@
+import pandas as pd 
+import matplotlib.pyplot as plt
+
+df=pd.read_csv("../ToyotaCorolla.csv", index_col=0, na_values=["??","????"])
+df.dropna(inplace=True)
+
+df.head()
+
+x=df["Price"]
+y=df["Age"]
+z=df["KM"]
+plt.tricontourf(x,y,z)
+plt.colorbar(label="Price")
+plt.show()

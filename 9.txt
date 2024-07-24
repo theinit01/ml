@@ -1,0 +1,50 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+from scipy.cluster.hierarchy import dendrogram, linkage
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+df = pd.DataFrame(data = iris.data, columns = iris.feature_names)
+data = df.head(6)
+data
+
+def single_linkage(data):
+    n = data.shape[0]
+    mat = np.zeros((n, n))
+    for i in range(n):
+        for j in range(i+1, n):
+            mat[i,j] = np.min(np.linalg.norm(data.iloc[i]-data.iloc[j]))
+            mat[j,i] = mat[i,j]
+    return mat
+
+def complete_linkage(data):
+    n = data.shape[0]
+    mat = np.zeros((n, n))
+    for i in range(n):
+        for j in range(i+1, n):
+            mat[i,j] = np.max(np.linalg.norm(data.iloc[i]-data.iloc[j]))
+            mat[j,i] = mat[i,j]
+    return mat
+
+s=single_linkage(data)
+print(s)
+print()
+c=complete_linkage(data)
+print(c)
+
+single=linkage(data,method="single")
+plt.figure(figsize=(10, 5))
+dendrogram(single)
+plt.title('Dendrogram - Single Linkage')
+plt.xlabel('Data Points')
+plt.ylabel('Distance')
+plt.show()
+
+com=linkage(data,method="complete")
+plt.figure(figsize=(10, 5))
+dendrogram(com)
+plt.title('Dendrogram - Complete Linkage')
+plt.xlabel('Data Points')
+plt.ylabel('Distance')
+plt.show()

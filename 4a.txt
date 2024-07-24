@@ -1,0 +1,11 @@
+import pandas as pd
+import matplotlib.pyplot as plt 
+
+df=pd.read_csv("../ToyotaCorolla.csv")
+df.head()
+
+x=df["Price"]
+y=df["Age"]
+plt.boxplot([x,y])
+plt.xticks([1,2],["Price","Age"])
+plt.show()

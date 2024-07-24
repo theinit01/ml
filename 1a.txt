@@ -1,0 +1,16 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+data=pd.read_csv("../ToyotaCorolla.csv", index_col=0, na_values=["??","????"])
+data.dropna(inplace=True)
+
+print(data.head())
+
+x = data['KM'][:10]
+y = data['Age'][:10]
+z = data['Price'][:10]
+fig = plt.figure(figsize=(10, 10))
+ax = fig.add_subplot(111, projection='3d')
+ax.plot_trisurf(x, y, z)

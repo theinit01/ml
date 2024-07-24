@@ -1,0 +1,42 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+
+iris = load_iris()
+df = pd.DataFrame(data = iris.data, columns = iris.feature_names)
+df.head(7)
+
+def kmeans(X, K, max_iters, plot=False):
+    '''
+    Implementing K means function
+    '''
+    centroids = X[:K]
+    
+    for i in range(max_iters):
+        # assign each datapoint to to the nearest centroid 
+        labels = np.argmin(np.linalg.norm(X[:,np.newaxis] - centroids, axis=2), axis=1)
+        
+        # update the centroids based on assigned points
+        new_centroids = np.array([X[labels == k].mean(axis=0) for k in range(K)])
+        
+        # Stop iterating if the centroids don't change
+        if np.all(centroids == new_centroids):
+            break
+        
+        centroids = new_centroids
+        
+        # Plotting
+        if plot:
+            plt.figure()
+            plt.scatter(X[:,0], X[:,1], c=labels)
+            plt.scatter(centroids[:,0], centroids[:,1], marker="X", color="red")
+            plt.title(f"Iteration {i+1}")
+            plt.show()
+    
+    return labels, centroids
+
+X=np.array(df.iloc[:,:-1].values)
+labels,c=kmeans(X,3,200,True)
+print(labels)
+print(c)
